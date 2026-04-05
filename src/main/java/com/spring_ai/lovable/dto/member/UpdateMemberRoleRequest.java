@@ -1,0 +1,7 @@
+package com.spring_ai.lovable.dto.member;
+
+
+import com.spring_ai.lovable.enums.ProjectRole;
+
+public record UpdateMemberRoleRequest(ProjectRole role) {
+}
