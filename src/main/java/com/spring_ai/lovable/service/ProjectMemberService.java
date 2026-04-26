@@ -5,7 +5,6 @@ package com.spring_ai.lovable.service;
 import com.spring_ai.lovable.dto.member.InviteMemberRequest;
 import com.spring_ai.lovable.dto.member.MemberResponse;
 import com.spring_ai.lovable.dto.member.UpdateMemberRoleRequest;
-import com.spring_ai.lovable.entity.ProjectMember;
 
 import java.util.List;
 
@@ -16,5 +15,5 @@ public interface ProjectMemberService {
 
     MemberResponse updateMemberRole(Long projectId, Long memberId, UpdateMemberRoleRequest request, Long userId);
 
-    MemberResponse deleteProjectMember(Long projectId, Long memberId, Long userId);
+    void removeProjectMember(Long projectId, Long memberId, Long userId);
 }
