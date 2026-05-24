@@ -31,12 +31,17 @@ public class Project {
     @Column(nullable = false)
     String name;
 
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
+    User owner;
 
     Boolean isPublic = false;
 
     @CreationTimestamp
     Instant createdAt;
+
     @UpdateTimestamp
     Instant updatedAt;
+
     Instant deletedAt; //soft delete
 }

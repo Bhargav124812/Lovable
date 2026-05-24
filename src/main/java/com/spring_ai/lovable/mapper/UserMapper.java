@@ -5,9 +5,11 @@ import com.spring_ai.lovable.dto.auth.SignupRequest;
 import com.spring_ai.lovable.dto.auth.UserProfileResponse;
 import com.spring_ai.lovable.entity.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
+    @Mapping(target = "name", source = "email")
     User toEntity(SignupRequest signupRequest);
 
     UserProfileResponse toUserProfileResponse(User user);

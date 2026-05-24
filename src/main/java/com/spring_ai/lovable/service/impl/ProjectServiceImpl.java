@@ -46,28 +46,31 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @PreAuthorize("@security.canViewProject(#projectId)")
-    public ProjectResponse getUserProjectById(Long id) {
+    public ProjectResponse getUserProjectById(Long projectId) {
         Long userId = authUtil.getCurrentUserId();
-        Project project = getAccessibleProjectById(id,userId);
+        Project project = getAccessibleProjectById(projectId,userId);
         return projectMapper.toProjectResponse(project);
     }
 
     @Override
     public ProjectResponse createProject(ProjectRequest request) {
-        Long userId = authUtil.getCurrentUserId();
-//        User owner = userRepository.findById(userId).orElseThrow(
-//                () -> new ResourceNotFoundException("User", userId.toString())
-//        );
 
-        User owner = userRepository.getReferenceById(userId);
+        Long userId = authUtil.getCurrentUserId();
+
+        User owner = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         Project project = Project.builder()
                 .name(request.name())
                 .isPublic(false)
+                .owner(owner)
                 .build();
 
         project = projectRepository.save(project);
 
-        ProjectMemberId projectMemberId = new ProjectMemberId(project.getId(), owner.getId());
+        ProjectMemberId projectMemberId =
+                new ProjectMemberId(project.getId(), owner.getId());
+
         ProjectMember projectMember = ProjectMember.builder()
                 .id(projectMemberId)
                 .projectRole(ProjectRole.OWNER)
@@ -76,7 +79,9 @@ public class ProjectServiceImpl implements ProjectService {
                 .invitedAt(Instant.now())
                 .project(project)
                 .build();
+
         projectMemberRepository.save(projectMember);
+
         return projectMapper.toProjectResponse(project);
     }
 

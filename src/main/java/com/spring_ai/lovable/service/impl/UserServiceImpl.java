@@ -4,12 +4,17 @@ import com.spring_ai.lovable.dto.auth.UserProfileResponse;
 import com.spring_ai.lovable.error.ResourceNotFoundException;
 import com.spring_ai.lovable.repository.UserRepository;
 import com.spring_ai.lovable.service.UserService;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class UserServiceImpl implements UserService, UserDetailsService {
     UserRepository userRepository;
     @Override
