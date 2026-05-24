@@ -5,8 +5,22 @@ import com.spring_ai.lovable.dto.subscription.CheckoutRequest;
 import com.spring_ai.lovable.dto.subscription.CheckoutResponse;
 import com.spring_ai.lovable.dto.subscription.PortalResponse;
 import com.spring_ai.lovable.dto.subscription.SubscriptionResponse;
+import com.spring_ai.lovable.enums.SubscriptionStatus;
+
+import java.time.Instant;
 
 public interface SubscriptionService {
-    SubscriptionResponse getCurrentSubscription(Long userId);
+    SubscriptionResponse getCurrentSubscription();
 
+    void activateSubscription(Long userId, Long planId, String subscriptionId, String customerId);
+
+    void updateSubscription(String id, SubscriptionStatus status, Instant periodStart, Instant periodEnd, Boolean cancelAtPeriodEnd, Long planId);
+
+    void cancelSubscription(String id);
+
+    void renewSubscriptionPeriod(String subId, Instant periodStart, Instant periodEnd);
+
+    void markSubscriptionPastDue(String subId);
+
+    boolean canCreateNewProject();
 }
