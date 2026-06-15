@@ -15,6 +15,7 @@ import com.spring_ai.lovable.repository.ProjectRepository;
 import com.spring_ai.lovable.repository.UserRepository;
 import com.spring_ai.lovable.security.AuthUtil;
 import com.spring_ai.lovable.service.ProjectService;
+import com.spring_ai.lovable.service.ProjectTemplateService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,8 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectMapper projectMapper;
     ProjectMemberRepository projectMemberRepository;
     AuthUtil authUtil;
+    ProjectTemplateService projectTemplateService;
+
 
     @Override
     public List<ProjectSummaryResponse> getUserProjects() {
@@ -81,6 +84,8 @@ public class ProjectServiceImpl implements ProjectService {
                 .build();
 
         projectMemberRepository.save(projectMember);
+
+        projectTemplateService.initializeProjectFromTemplate(project.getId());
 
         return projectMapper.toProjectResponse(project);
     }

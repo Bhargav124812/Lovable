@@ -20,11 +20,11 @@ spring:
 
   ai:
     openai:
-      api-key: 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
+      api-key:
       base-url: https://openrouter.ai/api
       chat:
         options:
-          model: nex-agi/nex-n2-pro:free
+          model: openai/gpt-5.2-codex
           temperature: 0.0
 
 jwt:

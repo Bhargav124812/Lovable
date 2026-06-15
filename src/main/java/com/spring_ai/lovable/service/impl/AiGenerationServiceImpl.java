@@ -1,6 +1,8 @@
 package com.spring_ai.lovable.service.impl;
 
 import com.spring_ai.lovable.llm.PromptUtil;
+import com.spring_ai.lovable.llm.advisors.FileTreeContextAdvisor;
+import com.spring_ai.lovable.llm.tools.CodeGenerationTools;
 import com.spring_ai.lovable.security.AuthUtil;
 import com.spring_ai.lovable.service.AiGenerationService;
 import com.spring_ai.lovable.service.ProjectFileService;
@@ -25,6 +27,7 @@ public class AiGenerationServiceImpl implements AiGenerationService {
     private final ChatClient chatClient;
     private final AuthUtil authUtil;
     private final ProjectFileService projectFileService;
+    private final FileTreeContextAdvisor fileTreeContextAdvisor;
 
     private static final Pattern FILE_TAG_PATTERN = Pattern.compile("<file path=\"([^\"]+)\">(.*?)</file>", Pattern.DOTALL);
     @Override
@@ -38,12 +41,15 @@ public class AiGenerationServiceImpl implements AiGenerationService {
                 "projectId", projectId
         );
         StringBuilder fullResponseBuffer = new StringBuilder();
+        CodeGenerationTools codeGenerationTools = new CodeGenerationTools(projectFileService, projectId);
 
         return chatClient.prompt()
                 .system(PromptUtil.CODE_GENERATION_SYSTEM_PROMPT)
                 .user(message)
+                .tools(codeGenerationTools)
                 .advisors(advisorSpec -> {
                     advisorSpec.params(advisorParams);
+                    advisorSpec.advisors(fileTreeContextAdvisor);
                 })
                 .stream()
                 .chatResponse()
