@@ -1,5 +1,6 @@
 package com.spring_ai.lovable.repository;
 
+import com.spring_ai.lovable.dto.project.FileNode;
 import com.spring_ai.lovable.entity.ProjectFile;
 import org.springframework.data.jpa.repository.JpaRepository;
 

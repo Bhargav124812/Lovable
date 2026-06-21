@@ -3,6 +3,7 @@ package com.spring_ai.lovable.controller;
 
 import com.spring_ai.lovable.dto.chat.ChatRequest;
 import com.spring_ai.lovable.dto.chat.ChatResponse;
+import com.spring_ai.lovable.dto.chat.StreamResponse;
 import com.spring_ai.lovable.service.AiGenerationService;
 import com.spring_ai.lovable.service.ChatService;
 import lombok.RequiredArgsConstructor;
@@ -14,19 +15,19 @@ import reactor.core.publisher.Flux;
 
 import java.util.List;
 
-@RequestMapping
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/chat")
 public class ChatController {
     private final AiGenerationService aiGenerationService;
     private final ChatService chatService;
 
-    @PostMapping(value = "/api/chat/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<ServerSentEvent<String>> streamChat(
+    @PostMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<ServerSentEvent<StreamResponse>> streamChat(
             @RequestBody ChatRequest request) {
 
         return aiGenerationService.streamResponse(request.message(), request.projectId())
-                .map(data -> ServerSentEvent.<String>builder()
+                .map(data -> ServerSentEvent.<StreamResponse>builder()
                         .data(data)
                         .build());
     }

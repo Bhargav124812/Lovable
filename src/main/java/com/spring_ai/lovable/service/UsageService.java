@@ -5,7 +5,7 @@ import com.spring_ai.lovable.dto.subscription.PlanLimitsResponse;
 import com.spring_ai.lovable.dto.subscription.UsageTodayResponse;
 
 public interface UsageService {
-     UsageTodayResponse getTodayUsageOfUser(Long userId);
+     void recordTokenUsage(Long userId,int actualTokens);
 
-    PlanLimitsResponse getCurrentSubscriptionLimitsOfUser(Long userId);
+    void checkDailyTokensUsage();
 }

@@ -2,6 +2,7 @@ package com.spring_ai.lovable.service.impl;
 
 import com.spring_ai.lovable.dto.project.FileContentResponse;
 import com.spring_ai.lovable.dto.project.FileNode;
+import com.spring_ai.lovable.dto.project.FileTreeResponse;
 import com.spring_ai.lovable.entity.Project;
 import com.spring_ai.lovable.entity.ProjectFile;
 import com.spring_ai.lovable.error.ResourceNotFoundException;
@@ -42,9 +43,10 @@ public class ProjectFileServiceImpl implements ProjectFileService {
     private String projectBucket;
 
     @Override
-    public List<FileNode> getFileTree(Long projectId) {
+    public FileTreeResponse getFileTree(Long projectId) {
         List<ProjectFile> projectFileList = projectFileRepository.findByProjectId(projectId);
-        return projectFileMapper.toListOfFileNode(projectFileList);
+        List<FileNode> projectFileNodes = projectFileMapper.toListOfFileNode(projectFileList);
+        return new FileTreeResponse(projectFileNodes);
     }
 
     @Override
