@@ -1,8 +1,10 @@
 package com.spring_ai.lovable.controller;
 
+import com.spring_ai.lovable.dto.deploy.DeployResponse;
 import com.spring_ai.lovable.dto.project.ProjectRequest;
 import com.spring_ai.lovable.dto.project.ProjectResponse;
 import com.spring_ai.lovable.dto.project.ProjectSummaryResponse;
+import com.spring_ai.lovable.service.DeploymentService;
 import com.spring_ai.lovable.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final DeploymentService deploymentService;
 
     @GetMapping
     public ResponseEntity<List<ProjectSummaryResponse>> getMyProjects() {
@@ -43,6 +46,10 @@ public class ProjectController {
     public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
         projectService.softDelete(id);
         return ResponseEntity.noContent().build();
+    }
+    @PostMapping("/{id}/deploy")
+    public ResponseEntity<DeployResponse> deployProject(@PathVariable Long id) {
+        return ResponseEntity.ok(deploymentService.deploy(id));
     }
 
 }
